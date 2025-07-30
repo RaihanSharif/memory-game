@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import { ScoreBoard } from "./components/Scoreboard";
+import { CardContainer } from "./components/CardContainer";
+import { Header } from "./components/Header";
+
+// testing to see if the score card values correctly update
+function ScoreTest({ onClick }) {
+  // show a button that, when clicked, updates scores
+  return <button onClick={onClick}>+1</button>;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  // updating score re-renders the whole app.
+  // should score be inside a more specific component
+  const [currentScore, setCurrentScore] = useState(0);
+  const [highestScore, setHighestScore] = useState(0);
+
+  /* stores the list of pokemon object from API call 
+  could be a global variable? */
+  /* if this was inside the CardContainer component
+  changing it wouldn't re-render the whole app
+  no other component needs it, so should be in the CardContainer
+  */
+  // const [itemList, setItemList] = useState([]);
+  // setItemList([{ id: 0, name: "asdf", imgSrc: "asdasasda" }]);
+
+  // the score updater will look something like this
+  function handleScoreUpdate() {
+    setCurrentScore((score) => score + 1);
+    if (currentScore >= highestScore) {
+      // + 1 or highestScore will always trail currentScore
+      // when currentScore >= highestScore
+      setHighestScore(currentScore + 1);
+    }
+    setHighestScore(
+      currentScore >= highestScore ? currentScore + 1 : highestScore
+    );
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      <ScoreBoard currentScore={currentScore} highestScore={highestScore} />
+      {/* <CardContainer itemList={itemList} setScore={handleScoreUpdate} /> */}
+      <ScoreTest onClick={handleScoreUpdate} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
