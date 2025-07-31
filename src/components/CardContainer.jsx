@@ -56,7 +56,7 @@ function CardContainer(setScore) {
 
   return (
     <section className="card-container">
-      {pokemonList.forEach((element) => {
+      {pokemonList.map((element) => {
         return (
           <Card
             key={element.id}
