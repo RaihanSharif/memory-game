@@ -1,4 +1,6 @@
 import { Card } from "./Card";
+import { useEffect, useState } from "react";
+//TODO: a randomizer function
 
 // TODO: what to do when card is clicked
 function cardClickHandler(cardId, updateScore) {
@@ -19,13 +21,42 @@ function cardClickHandler(cardId, updateScore) {
 //     return;
 // }
 
-function CardContainer(itemList, setScore) {
-  // todo: randomizer function that shuffles
-  // the itemList, from that create the cards grid
-  // should be a local var, not a state ??
+async function fetchPokemon(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`fetch error status ${response.status}`);
+    }
+
+    return response.json();
+  } catch (e) {
+    console.error(e.message);
+  }
+}
+
+function CardContainer(setScore) {
+  const [pokemonList, setPokemonList] = useState([]);
+
+  useEffect(() => {
+    const tempList = [];
+    for (let i = 35; i < 47; i++) {
+      fetchPokemon(`https://pokeapi.co/api/v2/pokemon/${i}`).then((result) => {
+        const {
+          id,
+          name,
+          sprites: { front_default },
+        } = result;
+        const tempObj = { id, name, sprite: front_default };
+        tempList.push(tempObj);
+      });
+    }
+    setPokemonList(tempList); // will this actually create the full list of pokemon?
+  }, []);
+  console.log(pokemonList);
+
   return (
     <section className="card-container">
-      {itemList.forEach((element) => {
+      {pokemonList.forEach((element) => {
         return (
           <Card
             key={element.id}
