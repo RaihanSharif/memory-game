@@ -3,12 +3,36 @@ import { useState, useEffect } from "react";
 
 /*eslint array-callback-return: "error"*/
 
+/**
+ *
+ * @param {number} quantity - how many numbers to generate
+ * @param {number} max - range of numbers to generate
+ * @returns a set containing the generated numbers
+ */
 function myRandomInts(quantity, max) {
   const set = new Set();
   while (set.size < quantity) {
     set.add(Math.floor(Math.random() * max) + 1);
   }
   return set;
+}
+
+// function to shuffle an array of pokemon objects
+function shuffleArr(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
 }
 
 function CardContainer() {
@@ -32,6 +56,7 @@ function CardContainer() {
       const temp = { id, name, sprite: front_default };
       tempArr.push(temp);
     }
+    shuffleArr(tempArr);
     setPokemonList(tempArr);
   }
   useEffect(() => {
