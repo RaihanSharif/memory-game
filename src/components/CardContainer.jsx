@@ -1,72 +1,48 @@
 import { Card } from "./Card";
-import { useEffect, useState } from "react";
-//TODO: a randomizer function
+import { useState, useEffect } from "react";
 
-// TODO: what to do when card is clicked
-function cardClickHandler(cardId, updateScore) {
-  // if cardId exists in previously clicked card list
-  // reset score, else updateScore
-  if (cardId === true) {
-    updateScore(true);
-  } else {
-    updateScore(false);
-  }
+/*eslint array-callback-return: "error"*/
 
-  // or more simply updateScore(cardId)
-}
+function CardContainer() {
+  const [pokemonList, setPokemonList] = useState(null);
 
-// function shuffleItemList(list) {
-//     // somehow randomize the cards, and return a
-//     // new list.
-//     return;
-// }
-
-async function fetchPokemon(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`fetch error status ${response.status}`);
+  async function getPokemon() {
+    const tempArr = [];
+    for (let i = 34; i < 47; i++) {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+      const json = await response.json();
+      console.log(`my json ${json}`);
+      const {
+        id,
+        name,
+        sprites: { front_default },
+      } = json;
+      const temp = { id, name, sprite: front_default };
+      tempArr.push(temp);
     }
-
-    return response.json();
-  } catch (e) {
-    console.error(e.message);
+    setPokemonList(tempArr);
   }
-}
-
-function CardContainer(setScore) {
-  const [pokemonList, setPokemonList] = useState([]);
-
   useEffect(() => {
-    const tempList = [];
-    for (let i = 35; i < 47; i++) {
-      fetchPokemon(`https://pokeapi.co/api/v2/pokemon/${i}`).then((result) => {
-        const {
-          id,
-          name,
-          sprites: { front_default },
-        } = result;
-        const tempObj = { id, name, sprite: front_default };
-        tempList.push(tempObj);
-      });
-    }
-    setPokemonList(tempList); // will this actually create the full list of pokemon?
+    getPokemon();
   }, []);
-  console.log(pokemonList);
 
   return (
-    <section className="card-container">
-      {pokemonList.map((element) => {
-        return (
-          <Card
-            key={element.id}
-            imgSrc={element.url}
-            name={element.name}
-            onClick={() => cardClickHandler(element.id, setScore)}
-          />
-        );
-      })}
-    </section>
+    <div className="card-container">
+      <h1>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2>
+
+      {pokemonList &&
+        pokemonList.map((item) => {
+          return (
+            <Card
+              key={item.name}
+              imgSrc={item.sprite}
+              name={item.name}
+              onClick={() => console.log(item.name)}
+            />
+          );
+        })}
+    </div>
   );
 }
 
