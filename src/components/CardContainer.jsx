@@ -7,8 +7,12 @@ function CardContainer() {
   const [pokemonList, setPokemonList] = useState(null);
 
   async function getPokemon() {
+    // give the api a random starting point so that every page refresh creates a new
+    // set of pokemon for the new game.
+    const randomNum = Math.floor(Math.random() * 1000);
     const tempArr = [];
-    for (let i = 34; i < 46; i++) {
+
+    for (let i = randomNum; i < randomNum + 12; i++) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
       const json = await response.json();
       console.log(`my json ${json}`);
