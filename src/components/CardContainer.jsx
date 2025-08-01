@@ -3,19 +3,27 @@ import { useState, useEffect } from "react";
 
 /*eslint array-callback-return: "error"*/
 
+function myRandomInts(quantity, max) {
+  const set = new Set();
+  while (set.size < quantity) {
+    set.add(Math.floor(Math.random() * max) + 1);
+  }
+  return set;
+}
+
 function CardContainer() {
   const [pokemonList, setPokemonList] = useState(null);
 
   async function getPokemon() {
     // give the api a random starting point so that every page refresh creates a new
     // set of pokemon for the new game.
-    const randomNum = Math.floor(Math.random() * 1000);
+    const randomNums = myRandomInts(12, 500);
     const tempArr = [];
 
-    for (let i = randomNum; i < randomNum + 12; i++) {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+    for (let num of randomNums) {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
       const json = await response.json();
-      console.log(`my json ${json}`);
+      console.log(json.name);
       const {
         id,
         name,
