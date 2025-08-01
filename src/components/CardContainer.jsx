@@ -8,7 +8,7 @@ function CardContainer() {
 
   async function getPokemon() {
     const tempArr = [];
-    for (let i = 34; i < 47; i++) {
+    for (let i = 34; i < 46; i++) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
       const json = await response.json();
       console.log(`my json ${json}`);
@@ -28,9 +28,6 @@ function CardContainer() {
 
   return (
     <div className="card-container">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-
       {pokemonList &&
         pokemonList.map((item) => {
           return (
@@ -38,7 +35,7 @@ function CardContainer() {
               key={item.name}
               imgSrc={item.sprite}
               name={item.name}
-              onClick={() => console.log(item.name)}
+              onClick={() => alert(item.name)}
             />
           );
         })}

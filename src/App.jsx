@@ -7,7 +7,14 @@ import { Header } from "./components/Header";
 function App() {
   // const [currentScore, setCurrentScore] = useState(0);
   // const [highestScore, setHighestScore] = useState(0);
-  return <CardContainer />;
+
+  return (
+    <>
+      <Header />
+      <ScoreBoard currentScore={2} highestScore={3} />
+      <CardContainer />
+    </>
+  );
 }
 
 export default App;
