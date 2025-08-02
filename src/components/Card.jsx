@@ -1,4 +1,3 @@
-// TODO: add alt tags to images
 function Card({ imgSrc, name, onClick }) {
   return (
     <div
@@ -8,7 +7,7 @@ function Card({ imgSrc, name, onClick }) {
         onClick();
       }}
     >
-      <img className="card-img" src={imgSrc} />
+      <img className="card-img" src={imgSrc} alt={name} />
       <span className="card-text">{name}</span>
     </div>
   );

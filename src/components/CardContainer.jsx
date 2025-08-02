@@ -11,7 +11,7 @@ function CardContainer({ pokemonList, onClick }) {
             <Card
               key={item.id}
               imgSrc={item.sprite}
-              name={item.id + " " + item.name}
+              name={item.name}
               onClick={() => {
                 onClick(item.id);
               }}
