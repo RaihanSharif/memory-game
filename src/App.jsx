@@ -53,6 +53,7 @@ function App() {
       }
       setCurrentScore(0);
       setClickedList([]);
+      getPokemon();
     } else {
       setCurrentScore((prev) => prev + 1);
       setClickedList((prev) => [...prev, clickedPokemonId]);
@@ -60,10 +61,8 @@ function App() {
   }
 
   async function getPokemon() {
-    // give the api a random starting point so that every page refresh creates a new
-    // set of pokemon for the new game.
     console.log("rerender...");
-    const randomNums = myRandomInts(12, 500); // this might need to be moved.
+    const randomNums = myRandomInts(12, 500);
     console.log(randomNums);
     const tempArr = [];
 
@@ -78,7 +77,6 @@ function App() {
       const temp = { id, name, sprite: front_default };
       tempArr.push(temp);
     }
-    shuffleArr(tempArr);
     setPokemonList(tempArr);
   }
   useEffect(() => {
