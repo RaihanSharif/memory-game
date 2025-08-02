@@ -44,7 +44,6 @@ function App() {
   const [clickedList, setClickedList] = useState([]);
 
   function handleClick(clickedPokemonId) {
-    setPokemonList(shuffleArr(pokemonList));
     const alreadyClicked = clickedList.includes(clickedPokemonId);
 
     if (alreadyClicked) {
@@ -58,6 +57,7 @@ function App() {
       setCurrentScore((prev) => prev + 1);
       setClickedList((prev) => [...prev, clickedPokemonId]);
     }
+    setPokemonList(shuffleArr(pokemonList));
   }
 
   async function getPokemon() {
