@@ -1,78 +1,20 @@
 import { Card } from "./Card";
-import { useState, useEffect } from "react";
 
 /*eslint array-callback-return: "error"*/
 
-/**
- *
- * @param {number} quantity - how many numbers to generate
- * @param {number} max - range of numbers to generate
- * @returns a set containing the generated numbers
- */
-function myRandomInts(quantity, max) {
-  const set = new Set();
-  while (set.size < quantity) {
-    set.add(Math.floor(Math.random() * max) + 1);
-  }
-  return set;
-}
-
-// function to shuffle an array of pokemon objects
-function shuffleArr(array) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-}
-
-function CardContainer() {
-  const [pokemonList, setPokemonList] = useState(null);
-
-  async function getPokemon() {
-    // give the api a random starting point so that every page refresh creates a new
-    // set of pokemon for the new game.
-    const randomNums = myRandomInts(12, 500);
-    const tempArr = [];
-
-    for (let num of randomNums) {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
-      const json = await response.json();
-      console.log(json.name);
-      const {
-        id,
-        name,
-        sprites: { front_default },
-      } = json;
-      const temp = { id, name, sprite: front_default };
-      tempArr.push(temp);
-    }
-    shuffleArr(tempArr);
-    setPokemonList(tempArr);
-  }
-  useEffect(() => {
-    getPokemon();
-  }, []);
-
+function CardContainer({ pokemonList, onClick }) {
   return (
     <div className="card-container">
       {pokemonList &&
         pokemonList.map((item) => {
           return (
             <Card
-              key={item.name}
+              key={item.id}
               imgSrc={item.sprite}
-              name={item.name}
-              onClick={() => alert(item.name)}
+              name={item.id + " " + item.name}
+              onClick={() => {
+                onClick(item.id);
+              }}
             />
           );
         })}
